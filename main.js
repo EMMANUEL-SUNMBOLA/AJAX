@@ -20,10 +20,33 @@ function sendToPhp(name){
     // Data to be sent
         success: function(response) {
             // Handle the response without reloading the page
+            $('.disp').html(response);
             console.log("Response from PHP:", response);
+        
+            $('.disp').load('index.php .disp', { caveman: updatedName });
+        // partial reload to make the page load new data without having to reload the entire page
         },
         error: function(error) {
             console.error("Error:", error);
         }
+    });
+}
+
+function sendToPhp(name) {
+    $.ajax({
+        type: "POST",
+        url: "index.php",
+        data: { caveman: name },
+        success: function (response) {
+            // Reload the content of the div with class 'disp' after the AJAX request is complete
+            $('.disp').html(response);
+
+            // Now, fetch the button data again and update the div
+            let updatedName = $('#Btn').data('caveman');
+            $('.disp').load('index.php .disp', { caveman: updatedName });
+        },
+        error: function (error) {
+            console.error("Error:", error);
+        },
     });
 }
